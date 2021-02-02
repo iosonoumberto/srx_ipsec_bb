@@ -1,0 +1,127 @@
+<configuration-set>
+set version 20200319.130545_builder.r1095278
+set groups member0 system host-name east
+set groups member0 system backup-router 10.102.175.254
+set groups member0 interfaces fxp0 unit 0 family inet address 10.102.161.99/20
+set groups global system root-authentication encrypted-password "$1$ZUlES4dp$OUwWo1g7cLoV/aMWpHUnC/"
+set groups global system login class wheel permissions snmp
+set groups global system login user regress uid 928
+set groups global system login user regress class superuser
+set groups global system login user regress shell csh
+set groups global system login user regress authentication encrypted-password "$1$kPU..$w.4FGRAGanJ8U4Yq6sbj7."
+set groups global system login user remote uid 2000
+set groups global system login user remote class super-user
+set groups global system services finger
+set groups global system services ftp
+set groups global system services rlogin
+set groups global system services ssh root-login allow
+set groups global system services telnet
+set groups global system services xnm-clear-text
+set groups global system services netconf ssh
+set groups global system domain-name englab.juniper.net
+set groups global system domain-search englab.juniper.net
+set groups global system domain-search juniper.net
+set groups global system domain-search jnpr.net
+set groups global system domain-search spglab.juniper.net
+set groups global system time-zone America/Los_Angeles
+set groups global system debugger-on-break
+set groups global system dump-on-panic
+set groups global system authentication-order password
+set groups global system authentication-order radius
+set groups global system name-server 10.102.149.51
+set groups global system name-server 10.102.149.52
+set groups global system radius-server 192.168.69.162 secret "$9$iHfz9Cu0BRQznCApIRSreWxNVw2GjkKM4JGimP"
+set groups global system radius-server 192.168.64.10 secret "$9$TQ/t1IcSrKAt0IRheK8X7VYgaZDm5zNdiqmTn6"
+set groups global system radius-server 192.168.4.240 secret "$9$GqUqf3nCApOPfQn690ORhSeWL7-boZDylsgoGHk"
+set groups global system syslog host log kernel info
+set groups global system syslog host log any notice
+set groups global system syslog host log pfe info
+set groups global system syslog host log interactive-commands any
+set groups global system syslog file messages kernel info
+set groups global system syslog file messages any notice
+set groups global system syslog file messages authorization info
+set groups global system syslog file messages pfe info
+set groups global system syslog file messages archive world-readable
+set groups global system syslog file security interactive-commands any
+set groups global system syslog file security archive world-readable
+set groups global system processes routing enable
+set groups global system processes ntp enable
+set groups global system processes management enable
+set groups global system processes watchdog enable
+set groups global system processes snmp enable
+set groups global system processes inet-process enable
+set groups global system processes mib-process enable
+set groups global system ntp boot-server 172.21.200.60
+set groups global system ntp server 172.21.200.60
+set groups global system ntp server 172.29.131.60
+set groups global system ntp server 172.29.135.60
+set groups global chassis dump-on-panic
+set groups global snmp location "Systest lab"
+set groups global snmp contact "Jay Lloyd"
+set groups global snmp interface fxp0.0
+set groups global snmp community public authorization read-only
+set groups global snmp community private authorization read-write
+set groups global routing-options static route 172.16.0.0/12 next-hop 10.102.175.254
+set groups global routing-options static route 172.16.0.0/12 retain
+set groups global routing-options static route 172.16.0.0/12 no-readvertise
+set groups global routing-options static route 192.168.0.0/16 next-hop 10.102.175.254
+set groups global routing-options static route 192.168.0.0/16 retain
+set groups global routing-options static route 192.168.0.0/16 no-readvertise
+set groups global routing-options static route 10.0.0.0/8 next-hop 10.102.175.254
+set groups global routing-options static route 10.0.0.0/8 retain
+set groups global routing-options static route 10.0.0.0/8 no-readvertise
+set groups global routing-options static route 66.129.255.62/32 next-hop 10.102.175.254
+set groups global routing-options static route 66.129.255.62/32 retain
+set groups global routing-options static route 66.129.255.62/32 no-readvertise
+set apply-groups global
+set apply-groups member0
+set system ports console log-out-on-disconnect
+set security ike proposal oam-ike-prop authentication-method pre-shared-keys
+set security ike proposal oam-ike-prop dh-group group14
+set security ike proposal oam-ike-prop authentication-algorithm sha-384
+set security ike proposal oam-ike-prop encryption-algorithm aes-256-cbc
+set security ike policy oam-ike-pol mode main
+set security ike policy oam-ike-pol proposals oam-ike-prop
+set security ike policy oam-ike-pol pre-shared-key ascii-text "$9$V0Y2aZGifT3wY4ZUDmPn/CpBEcSe8xdcy"
+set security ike gateway oam-ike-gw ike-policy oam-ike-pol
+set security ike gateway oam-ike-gw address 172.30.6.0
+set security ike gateway oam-ike-gw dead-peer-detection
+set security ike gateway oam-ike-gw external-interface ge-0/0/1.0
+set security ike gateway oam-ike-gw version v1-only
+set security ipsec proposal oam-ips-prop protocol esp
+set security ipsec proposal oam-ips-prop authentication-algorithm hmac-sha-256-128
+set security ipsec proposal oam-ips-prop encryption-algorithm aes-256-cbc
+set security ipsec policy oam-ips-pol proposals oam-ips-prop
+set security ipsec vpn oam bind-interface st0.0
+set security ipsec vpn oam ike gateway oam-ike-gw
+set security ipsec vpn oam ike ipsec-policy oam-ips-pol
+set security ipsec vpn oam establish-tunnels immediately
+set security flow tcp-mss ipsec-vpn mss 1350
+set security policies from-zone bb to-zone lo0 policy allow match source-address any
+set security policies from-zone bb to-zone lo0 policy allow match destination-address any
+set security policies from-zone bb to-zone lo0 policy allow match application junos-bgp
+set security policies from-zone bb to-zone lo0 policy allow then permit
+set security zones security-zone bb host-inbound-traffic system-services all
+set security zones security-zone bb host-inbound-traffic protocols all
+set security zones security-zone bb interfaces ge-0/0/1.0
+set security zones security-zone lan host-inbound-traffic system-services all
+set security zones security-zone lan host-inbound-traffic protocols all
+set security zones security-zone lan interfaces ge-0/0/0.0
+set security zones security-zone vpn-oam host-inbound-traffic system-services all
+set security zones security-zone vpn-oam interfaces st0.0
+set security zones security-zone lo0 interfaces lo0.0 host-inbound-traffic system-services all
+set security zones security-zone lo0 interfaces lo0.0 host-inbound-traffic protocols all
+set interfaces ge-0/0/0 unit 0 family inet address 192.168.1.1/24
+set interfaces ge-0/0/1 unit 0 family inet address 172.30.2.0/31
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+set interfaces st0 unit 0 family inet mtu 1436
+set interfaces st0 unit 0 family inet address 10.0.1.2/24
+set protocols ospf area 0.0.0.0 interface lo0.0 passive
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0 interface-type p2p
+set protocols bgp group i type internal
+set protocols bgp group i local-address 1.1.1.1
+set protocols bgp group i neighbor 3.3.3.3
+set routing-options static route 3.3.3.3/32 next-hop st0.0
+deactivate routing-options static route 3.3.3.3/32
+set routing-options autonomous-system 100
+</configuration-set>
