@@ -1,5 +1,5 @@
 <configuration-text>
-## Last changed: 2021-02-03 06:50:27 PST
+## Last changed: 2021-02-03 07:01:30 PST
 version 20200319.130545_builder.r1095278;
 groups {
     member0 {
@@ -205,6 +205,20 @@ security {
             establish-tunnels immediately;
         }
     }
+    policies {
+        from-zone vpn-oam to-zone lo0 {
+            policy allow {
+                match {
+                    source-address any;
+                    destination-address any;
+                    application junos-bgp;
+                }
+                then {
+                    permit;
+                }
+            }
+        }
+    }
     zones {
         security-zone bb {
             host-inbound-traffic {
@@ -217,7 +231,6 @@ security {
             }
             interfaces {
                 ge-0/0/0.0;
-                lo0.0;
             }
         }
         security-zone vpn-data {
@@ -254,6 +267,20 @@ security {
             }
             interfaces {
                 st0.0;
+            }
+        }
+        security-zone lo0 {
+            interfaces {
+                lo0.0 {
+                    host-inbound-traffic {
+                        system-services {
+                            all;
+                        }
+                        protocols {
+                            all;
+                        }
+                    }
+                }
             }
         }
     }
@@ -308,10 +335,22 @@ protocols {
             }
         }
     }
+    bgp {
+        group i {
+            type internal;
+            local-address 2.2.2.2;
+            family inet-vpn {
+                unicast;
+            }
+            neighbor 3.3.3.3;
+        }
+    }
 }
 routing-options {
     static {
         route 1.1.1.1/32 next-hop st0.1;
+        route 3.3.3.3/32 next-hop st0.0;
     }
+    autonomous-system 100;
 }
 </configuration-text>

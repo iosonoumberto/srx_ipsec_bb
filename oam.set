@@ -130,7 +130,10 @@ set protocols ospf area 0.0.0.1 interface ge-0/0/0.0 interface-type p2p
 set protocols bgp group i type internal
 set protocols bgp group i local-address 3.3.3.3
 set protocols bgp group i family inet-vpn unicast
+set protocols bgp group i cluster 0.0.0.1
 set protocols bgp group i neighbor 1.1.1.1
+set protocols bgp group i neighbor 2.2.2.2
 set routing-options static route 1.1.1.1/32 next-hop st0.0
+set routing-options static route 2.2.2.2/32 next-hop st0.1
 set routing-options autonomous-system 100
 </configuration-set>

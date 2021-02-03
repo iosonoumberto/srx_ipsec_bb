@@ -105,10 +105,13 @@ set security ipsec vpn data bind-interface st0.1
 set security ipsec vpn data ike gateway data-gw
 set security ipsec vpn data ike ipsec-policy ips-pol
 set security ipsec vpn data establish-tunnels immediately
+set security policies from-zone vpn-oam to-zone lo0 policy allow match source-address any
+set security policies from-zone vpn-oam to-zone lo0 policy allow match destination-address any
+set security policies from-zone vpn-oam to-zone lo0 policy allow match application junos-bgp
+set security policies from-zone vpn-oam to-zone lo0 policy allow then permit
 set security zones security-zone bb host-inbound-traffic system-services all
 set security zones security-zone bb host-inbound-traffic protocols all
 set security zones security-zone bb interfaces ge-0/0/0.0
-set security zones security-zone bb interfaces lo0.0
 set security zones security-zone vpn-data host-inbound-traffic system-services all
 set security zones security-zone vpn-data interfaces st0.1
 set security zones security-zone gre-data host-inbound-traffic system-services all
@@ -117,6 +120,8 @@ set security zones security-zone gre-data interfaces gr-0/0/0.1
 set security zones security-zone vpn-oam host-inbound-traffic system-services all
 set security zones security-zone vpn-oam host-inbound-traffic protocols all
 set security zones security-zone vpn-oam interfaces st0.0
+set security zones security-zone lo0 interfaces lo0.0 host-inbound-traffic system-services all
+set security zones security-zone lo0 interfaces lo0.0 host-inbound-traffic protocols all
 set interfaces ge-0/0/0 unit 0 family inet address 173.30.5.0/31
 set interfaces gr-0/0/0 unit 1 tunnel source 2.2.2.2
 set interfaces gr-0/0/0 unit 1 tunnel destination 1.1.1.1
@@ -128,5 +133,11 @@ set interfaces st0 unit 1 family inet mtu 1436
 set interfaces st0 unit 1 family inet address 10.0.2.1/30
 set protocols ospf area 0.0.0.1 stub
 set protocols ospf area 0.0.0.1 interface ge-0/0/0.0 interface-type p2p
+set protocols bgp group i type internal
+set protocols bgp group i local-address 2.2.2.2
+set protocols bgp group i family inet-vpn unicast
+set protocols bgp group i neighbor 3.3.3.3
 set routing-options static route 1.1.1.1/32 next-hop st0.1
+set routing-options static route 3.3.3.3/32 next-hop st0.0
+set routing-options autonomous-system 100
 </configuration-set>
